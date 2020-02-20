@@ -1,0 +1,610 @@
+[
+    {
+        "id": "220920e6.02ba28",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "643eb533.3dd2ec",
+        "type": "tado",
+        "z": "220920e6.02ba28",
+        "home": "277df350.546c4c",
+        "interval": "10",
+        "path": "/homes/432082/zones",
+        "x": 250,
+        "y": 220,
+        "wires": [
+            [
+                "2d6c967c.d0996a",
+                "ba831640.efeca"
+            ]
+        ]
+    },
+    {
+        "id": "84dd543d.455f68",
+        "type": "debug",
+        "z": "220920e6.02ba28",
+        "name": "Zone Name DBG",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 935,
+        "y": 29,
+        "wires": []
+    },
+    {
+        "id": "2d6c967c.d0996a",
+        "type": "function",
+        "z": "220920e6.02ba28",
+        "name": "Tado Zones Splitter",
+        "func": "if (msg.payload === null)\n    return [null];\nvar zone = {\"name\": \"no_name\", \"battery\":\"depleted\", \"id\":\"-1\"};\nvar output2 = [zone, zone, zone, zone, zone]; //zone[msg.payload.length];\nvar output3 = {\"payload\": \"\"};\noutput3.payload = output2;\nvar i;\n\nfor (i=0; i<msg.payload.length; i++)\n{\n    output3.payload[i].name = msg.payload[i].name;\n    output3.payload[i].battery = msg.payload[i].devices[0].batteryState;\n    output3.payload[i].id = i;\n    \n    output2[i] = {\n        \"name\":         msg.payload[i].name,\n        \"battery\":      msg.payload[i].devices[0].batteryState,\n        \"id\":           i};\n        \n}\n\n\nvar out1, out2, out3, out4, out5, out6;\nout1 = msg.payload[0];\nout2 = msg.payload[1];\nout3 = msg.payload[2];\nout4 = msg.payload[3];\nout5 = msg.payload[4];\n\nreturn [output3, output3.payload[0], output3.payload[1], output3.payload[2], output3.payload[3], output3.payload[4]];\n\n\n",
+        "outputs": 6,
+        "noerr": 0,
+        "x": 510,
+        "y": 220,
+        "wires": [
+            [
+                "84dd543d.455f68"
+            ],
+            [
+                "195a0e07.f36e12",
+                "ffabd5b3.174d08"
+            ],
+            [
+                "b962dc98.fcd48",
+                "ea6c69b5.fa677"
+            ],
+            [
+                "b8d04013.18b5e8",
+                "94cb9338.e8ed1"
+            ],
+            [
+                "508ebabb.5d723c"
+            ],
+            [
+                "6872d422.31e934"
+            ]
+        ],
+        "outputLabels": [
+            "Zones",
+            "Zone1",
+            "Zone2",
+            "Zone3",
+            "Zone4",
+            "Zone5"
+        ]
+    },
+    {
+        "id": "5da17d78.c9a98c",
+        "type": "tado",
+        "z": "220920e6.02ba28",
+        "home": "277df350.546c4c",
+        "interval": "10",
+        "path": "/homes/432082/zones/1/state",
+        "x": 250,
+        "y": 300,
+        "wires": [
+            [
+                "f9efacd7.ddb31",
+                "da07e3b0.75435"
+            ]
+        ]
+    },
+    {
+        "id": "34af0386.69481c",
+        "type": "debug",
+        "z": "220920e6.02ba28",
+        "name": "Zone State DBG",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 810,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "f9efacd7.ddb31",
+        "type": "function",
+        "z": "220920e6.02ba28",
+        "name": "Tado Attrib Splitter",
+        "func": "if (msg.payload === null)\n    return [null];\nvar output = {\n    \"setpoint\":    msg.payload.setting.temperature.celsius,\n    \"temperature\": msg.payload.sensorDataPoints.insideTemperature.celsius,\n    \"humidity\":    msg.payload.sensorDataPoints.humidity.percentage,\n    \"power\":       msg.payload.activityDataPoints.heatingPower.percentage,\n    \n}\n\nreturn output;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 510,
+        "y": 300,
+        "wires": [
+            [
+                "34af0386.69481c",
+                "ffabd5b3.174d08"
+            ]
+        ]
+    },
+    {
+        "id": "86f27936.c6c1d8",
+        "type": "debug",
+        "z": "220920e6.02ba28",
+        "name": "Join msg DBG",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1200,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "da07e3b0.75435",
+        "type": "debug",
+        "z": "220920e6.02ba28",
+        "name": "Raw State",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 500,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "ba831640.efeca",
+        "type": "debug",
+        "z": "220920e6.02ba28",
+        "name": "Raw Zones",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 500,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "195a0e07.f36e12",
+        "type": "debug",
+        "z": "220920e6.02ba28",
+        "name": "Out1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 975,
+        "y": 69,
+        "wires": []
+    },
+    {
+        "id": "b962dc98.fcd48",
+        "type": "debug",
+        "z": "220920e6.02ba28",
+        "name": "Out2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 975,
+        "y": 109,
+        "wires": []
+    },
+    {
+        "id": "b8d04013.18b5e8",
+        "type": "debug",
+        "z": "220920e6.02ba28",
+        "name": "Out3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 975,
+        "y": 149,
+        "wires": []
+    },
+    {
+        "id": "ffabd5b3.174d08",
+        "type": "join",
+        "z": "220920e6.02ba28",
+        "name": "",
+        "mode": "custom",
+        "build": "merged",
+        "property": "",
+        "propertyType": "full",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "2",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 976,
+        "y": 188,
+        "wires": [
+            [
+                "86f27936.c6c1d8",
+                "4364b67c.9307d8"
+            ]
+        ]
+    },
+    {
+        "id": "4364b67c.9307d8",
+        "type": "mqtt out",
+        "z": "220920e6.02ba28",
+        "name": "rooms/1/heating",
+        "topic": "rooms/1/heating",
+        "qos": "",
+        "retain": "",
+        "broker": "4a372330.edc47c",
+        "x": 1200,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "e160d85e.b1b7a",
+        "type": "mqtt in",
+        "z": "220920e6.02ba28",
+        "name": "rooms",
+        "topic": "rooms/1/heating",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "4a372330.edc47c",
+        "x": 250,
+        "y": 40,
+        "wires": [
+            [
+                "bb3e620b.8fdf"
+            ]
+        ]
+    },
+    {
+        "id": "bb3e620b.8fdf",
+        "type": "debug",
+        "z": "220920e6.02ba28",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 410,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "372706b8.df6152",
+        "type": "tado",
+        "z": "220920e6.02ba28",
+        "home": "277df350.546c4c",
+        "interval": "10",
+        "path": "/homes/432082/zones/2/state",
+        "x": 250,
+        "y": 460,
+        "wires": [
+            [
+                "69eae8ae.27a748"
+            ]
+        ]
+    },
+    {
+        "id": "69eae8ae.27a748",
+        "type": "function",
+        "z": "220920e6.02ba28",
+        "name": "Tado Attrib Splitter",
+        "func": "if (msg.payload === null)\n    return [null];\nvar output = {\n    \"setpoint\":    msg.payload.setting.temperature.celsius,\n    \"temperature\": msg.payload.sensorDataPoints.insideTemperature.celsius,\n    \"humidity\":    msg.payload.sensorDataPoints.humidity.percentage,\n    \"power\":       msg.payload.activityDataPoints.heatingPower.percentage,\n    \n}\n\nreturn output;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 510,
+        "y": 460,
+        "wires": [
+            [
+                "ea6c69b5.fa677"
+            ]
+        ]
+    },
+    {
+        "id": "ea6c69b5.fa677",
+        "type": "join",
+        "z": "220920e6.02ba28",
+        "name": "",
+        "mode": "custom",
+        "build": "merged",
+        "property": "",
+        "propertyType": "full",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "2",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 970,
+        "y": 460,
+        "wires": [
+            [
+                "3b3cfcf7.8c57fc"
+            ]
+        ]
+    },
+    {
+        "id": "3b3cfcf7.8c57fc",
+        "type": "mqtt out",
+        "z": "220920e6.02ba28",
+        "name": "rooms/1/heating",
+        "topic": "rooms/1/heating",
+        "qos": "",
+        "retain": "",
+        "broker": "4a372330.edc47c",
+        "x": 1200,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "82c366d8.05ab88",
+        "type": "tado",
+        "z": "220920e6.02ba28",
+        "home": "277df350.546c4c",
+        "interval": "10",
+        "path": "/homes/432082/zones/3/state",
+        "x": 250,
+        "y": 520,
+        "wires": [
+            [
+                "85f4fc6e.f21d08"
+            ]
+        ]
+    },
+    {
+        "id": "85f4fc6e.f21d08",
+        "type": "function",
+        "z": "220920e6.02ba28",
+        "name": "Tado Attrib Splitter",
+        "func": "if (msg.payload === null)\n    return [null];\nvar output = {\n    \"setpoint\":    msg.payload.setting.temperature.celsius,\n    \"temperature\": msg.payload.sensorDataPoints.insideTemperature.celsius,\n    \"humidity\":    msg.payload.sensorDataPoints.humidity.percentage,\n    \"power\":       msg.payload.activityDataPoints.heatingPower.percentage,\n    \n}\n\nreturn output;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 510,
+        "y": 520,
+        "wires": [
+            [
+                "94cb9338.e8ed1"
+            ]
+        ]
+    },
+    {
+        "id": "94cb9338.e8ed1",
+        "type": "join",
+        "z": "220920e6.02ba28",
+        "name": "",
+        "mode": "custom",
+        "build": "merged",
+        "property": "",
+        "propertyType": "full",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "2",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 970,
+        "y": 520,
+        "wires": [
+            [
+                "c779135b.2ce278"
+            ]
+        ]
+    },
+    {
+        "id": "c779135b.2ce278",
+        "type": "mqtt out",
+        "z": "220920e6.02ba28",
+        "name": "rooms/1/heating",
+        "topic": "rooms/1/heating",
+        "qos": "",
+        "retain": "",
+        "broker": "4a372330.edc47c",
+        "x": 1200,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "86a86e19.fb6188",
+        "type": "tado",
+        "z": "220920e6.02ba28",
+        "home": "277df350.546c4c",
+        "interval": "10",
+        "path": "/homes/432082/zones/4/state",
+        "x": 250,
+        "y": 580,
+        "wires": [
+            [
+                "d49a21eb.139c4"
+            ]
+        ]
+    },
+    {
+        "id": "d49a21eb.139c4",
+        "type": "function",
+        "z": "220920e6.02ba28",
+        "name": "Tado Attrib Splitter",
+        "func": "if (msg.payload === null)\n    return [null];\nvar output = {\n    \"setpoint\":    msg.payload.setting.temperature.celsius,\n    \"temperature\": msg.payload.sensorDataPoints.insideTemperature.celsius,\n    \"humidity\":    msg.payload.sensorDataPoints.humidity.percentage,\n    \"power\":       msg.payload.activityDataPoints.heatingPower.percentage,\n    \n}\n\nreturn output;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 510,
+        "y": 580,
+        "wires": [
+            [
+                "508ebabb.5d723c"
+            ]
+        ]
+    },
+    {
+        "id": "508ebabb.5d723c",
+        "type": "join",
+        "z": "220920e6.02ba28",
+        "name": "",
+        "mode": "custom",
+        "build": "merged",
+        "property": "",
+        "propertyType": "full",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "2",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 970,
+        "y": 580,
+        "wires": [
+            [
+                "717422c3.7834ec"
+            ]
+        ]
+    },
+    {
+        "id": "717422c3.7834ec",
+        "type": "mqtt out",
+        "z": "220920e6.02ba28",
+        "name": "rooms/1/heating",
+        "topic": "rooms/1/heating",
+        "qos": "",
+        "retain": "",
+        "broker": "4a372330.edc47c",
+        "x": 1200,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "67803be9.1db774",
+        "type": "tado",
+        "z": "220920e6.02ba28",
+        "home": "277df350.546c4c",
+        "interval": "10",
+        "path": "/homes/432082/zones/6/state",
+        "x": 250,
+        "y": 640,
+        "wires": [
+            [
+                "bbd86b26.26046"
+            ]
+        ]
+    },
+    {
+        "id": "bbd86b26.26046",
+        "type": "function",
+        "z": "220920e6.02ba28",
+        "name": "Tado Attrib Splitter",
+        "func": "if (msg.payload === null)\n    return [null];\nvar output = {\n    \"setpoint\":    msg.payload.setting.temperature.celsius,\n    \"temperature\": msg.payload.sensorDataPoints.insideTemperature.celsius,\n    \"humidity\":    msg.payload.sensorDataPoints.humidity.percentage,\n    \"power\":       msg.payload.activityDataPoints.heatingPower.percentage,\n    \n}\n\nreturn output;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 510,
+        "y": 640,
+        "wires": [
+            [
+                "6872d422.31e934"
+            ]
+        ]
+    },
+    {
+        "id": "6872d422.31e934",
+        "type": "join",
+        "z": "220920e6.02ba28",
+        "name": "",
+        "mode": "custom",
+        "build": "merged",
+        "property": "",
+        "propertyType": "full",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "2",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 970,
+        "y": 640,
+        "wires": [
+            [
+                "5a4724f8.80defc"
+            ]
+        ]
+    },
+    {
+        "id": "5a4724f8.80defc",
+        "type": "mqtt out",
+        "z": "220920e6.02ba28",
+        "name": "rooms/1/heating",
+        "topic": "rooms/1/heating",
+        "qos": "",
+        "retain": "",
+        "broker": "4a372330.edc47c",
+        "x": 1200,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "277df350.546c4c",
+        "type": "tado-home",
+        "z": "",
+        "username": "",
+        "password": ""
+    },
+    {
+        "id": "4a372330.edc47c",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "localhost",
+        "broker": "172.17.0.2",
+        "port": "1883",
+        "clientid": "NodeRed1",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]
