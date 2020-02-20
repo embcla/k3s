@@ -17,6 +17,11 @@ Moved to a configuration similar to that of the Rancher K3S Masterclass of 17th 
 
 This way the cluster does come up showing two masters, but tainting the masters doesn't work: master1 still executes all pods.
 
+# NodeRed
+Added a JSON flow definition to extract data for each room from Tado, parse it, clean it and retransmit it over MQTT.
+MQTT stream will then be routed through prometheus and grafana for analysis and graphing
+![NodeRed Tado Flow](/Tado%20NodeRed%20Flow.PNG)
+
 # To Do
 Fix tainting<br/>
 Fix virtual ip<br/>
