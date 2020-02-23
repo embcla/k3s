@@ -1,29 +1,64 @@
-# K3S Multi Master Cluster Vagrant configuration
-Designed to istantiate a multi-master k3s 1.0.x cluster via Vagrant and VirtualBox.
-It containes 4 machines
-* master1
-* master2
-* node1
-* node2
 
-It is based on the work of Michaelc0n available here<br/>
-http://devnetstack.com/kubernetes-the-easy-way-with-k3s/
+                                                                                             
+               ██╗  ██╗██████╗ ███████╗██████╗  ██████╗ ██╗     ██╗                          
+               ██║ ██╔╝╚════██╗██╔════╝██╔══██╗██╔═══██╗██║     ██║                          
+               █████╔╝  █████╔╝███████╗██████╔╝██║   ██║██║     ██║                          
+               ██╔═██╗  ╚═══██╗╚════██║██╔══██╗██║   ██║██║     ██║                          
+               ██║  ██╗██████╔╝███████║██║  ██║╚██████╔╝███████╗███████╗                     
+               ╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝                     
+                                                                                             
+         A complete cluster in a small configurable space, like your laptop!                 
 
-And is taking inspiration also from the work of Osvaldo Toja available here<br/>
-https://medium.com/@toja/running-k3s-with-metallb-on-vagrant-bd9603a5113b
+With immesurable thanks to:                                                              
+*  My wife, whose patience is higher than my nerdiness                                  
+*  Google, for developing and releasing K8S for free                                   
+*  Rancher Labs, for developing and releasing K3S for free                             
+*  Osvaldo Toja, for publishing his inspiring work on Github and Medium https://medium.com/@toja/running-k3s-with-metallb-on-vagrant-bd9603a5113b        
+*  Michaelc0n, for publishing his work on Github http://devnetstack.com/kubernetes-the-easy-way-with-k3s/
 
-# Functionality
-Moved to a configuration similar to that of the Rancher K3S Masterclass of 17th December 2019 ( https://www.youtube.com/watch?v=_lNnrrp-8zQ ): external MySQL database, external token secret. All machines load the same token, masters use the MySQL for datastore.
+# 1) General description of the project                                                    
+Kubernetes is a very complex environment: it disentangles and virtualizes every       
+resource, giving the administrator immense power. In the best of traditions           
+with immense power come immense responsibilities, specifically to learn about         
+all the new reources to configure in order to obtain the expected result.             
+Testing anything like this used to be a costly undertaking involving Google Cloud     
+Engine, Digital Ocean, Amazon Kubernetes Engine, Azure, etc. With K3S you can         
+run a 90% Kubernetes environment right in your computer.                              
 
-This way the cluster does come up showing two masters, but tainting the masters doesn't work: master1 still executes all pods.
+
+# 2) Prerequisites                                                                         
+*  Virtualbox (a version compatible with vagrant)                                     
+*  Vagrant                                                                            
+*  working internet connection (to download packages for Linux and K3S)               
+*  a "persistentvolume" folder in the current path, it get mounted in the nodes       
+
+
+# 3) Usage                                                                                 
+Run "vagrant up" and it will create all the cluster for you.                          
+If vagrant gets stuck during spinning up of the K3S service on the masters,           
+give it a ctrl+c and relunch it. This is a known bug.                                 
+
+Once creation, booting and provisioning of all machines is completed, you can         
+log into master1 and type "k3s kubectl get nodes,pods,svc -A" and you'll see          
+your cluster. Happy clustering!                                                       
+
+
+# 4) Configuration                                                                         
+You can configure a number of options in this Vagrantfile, namely                     
+master nodes, worker nodes, memory and cpu of these two types, cluster name prefix    
+
+
+# 5) Known bugs
+* K3S install script gets stuck during master nodes installation. I haven't been able to figure out why yet.
+                                                                                             
+                                                                                             
+                                                                                             
 
 # NodeRed
 Added a JSON flow definition to extract data for each room from Tado, parse it, clean it and retransmit it over MQTT.
 MQTT stream will then be routed through prometheus and grafana for analysis and graphing
 ![NodeRed Tado Flow](/Tado%20NodeRed%20Flow.PNG)
 
-# To Do
-Fix tainting<br/>
-Fix virtual ip<br/>
+# To Dos
 Fix mysql single point of failure<br/>
 Run something useful<br/>
