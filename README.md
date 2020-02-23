@@ -49,7 +49,9 @@ master nodes, worker nodes, memory and cpu of these two types, cluster name pref
 
 # 5) Kubectl and helm
 Kubectl and helm both work out of the box, the configuration of the cluster is saved as k3s.yaml.
-You can run kubectl --kubeconfig k3s.yaml get nodes to see it working
+You can run
+kubectl --kubeconfig k3s.yaml get nodes
+to see it working
 An easy way to get around the verbose notation is aliasing the command
 alias k="kubectl --kubeconfig k3s.yaml"
 and after this you can just type "k get nodes"
