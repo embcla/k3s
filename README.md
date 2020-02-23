@@ -51,13 +51,7 @@ master nodes, worker nodes, memory and cpu of these two types, cluster name pref
 # 5) Known bugs
 * K3S install script gets stuck during master nodes installation. I haven't been able to figure out why yet.
                                                                                              
-                                                                                             
-                                                                                             
 
-# NodeRed
-Added a JSON flow definition to extract data for each room from Tado, parse it, clean it and retransmit it over MQTT.
-MQTT stream will then be routed through prometheus and grafana for analysis and graphing
-![NodeRed Tado Flow](/Tado%20NodeRed%20Flow.PNG)
 
 # To Dos
 Fix mysql single point of failure<br/>
