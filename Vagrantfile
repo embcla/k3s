@@ -104,7 +104,7 @@ $configureK3SMaster=<<-SHELL
   HOSTNAME=$(hostname)
   IPADDR=$(ip a show enp0s8 | grep "inet " | awk '{print $2}' | cut -d / -f1)
   #curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=" -v 2 -l /vagrant/master1.log --node-ip=${IPADDR} --flannel-iface=enp0s8 --write-kubeconfig-mode 644 --kube-apiserver-arg="service-node-port-range=30000-30100" --no-deploy=servicelb --no-deploy=traefik" K3S_DATASTORE_ENDPOINT="http://127.0.0.1:2379" sh -
-  curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="-v 2 -l /vagrant/lgos/${HOSTNAME}_node.log -t ${NODE_TOKEN} --flannel-iface=enp0s8 --write-kubeconfig-mode 644 --tls-san k3s-cluster-01.lan --no-deploy servicelb --no-deploy traefik --node-taint k3s-controlplane=true:NoExecute --no-deploy=traefik --no-deploy=servicelb --datastore-endpoint mysql://k3s:${MYSQL_PASSWORD}@tcp(${MYSQL_IP}:3306)/k3s" sh -
+  curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="-v 2 -l /vagrant/logs/${HOSTNAME}_node.log -t ${NODE_TOKEN} --flannel-iface=enp0s8 --write-kubeconfig-mode 644 --tls-san k3s-cluster-01.lan --no-deploy servicelb --no-deploy traefik --node-taint k3s-controlplane=true:NoExecute --no-deploy=traefik --no-deploy=servicelb --datastore-endpoint mysql://k3s:${MYSQL_PASSWORD}@tcp(${MYSQL_IP}:3306)/k3s" sh -
   #hostnamectl set-hostname master1
   #NODE_TOKEN="/var/lib/rancher/k3s/server/node-token"
   sudo sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/g' /etc/ssh/sshd_config
